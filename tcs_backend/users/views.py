@@ -10,11 +10,12 @@ class IsAdmin(permissions.BasePermission):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_permissions(self):
-        if self.action in ['create', 'list']:
+        if self.action in ['create']:
             permission_classes = [permissions.AllowAny]
-        elif self.action in ['retrieve', 'update', 'partial_update']:
+        elif self.action in ['list', 'retrieve', 'update', 'partial_update']:
             permission_classes = [permissions.IsAuthenticated]
         elif self.action in ['destroy']:
             permission_classes = [permissions.IsAuthenticated, IsAdmin]
